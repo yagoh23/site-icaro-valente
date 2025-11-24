@@ -1,40 +1,39 @@
-let btnNext = document.querySelector('.next')
-let btnPrev = document.querySelector('.prev')
+const btnNext = document.querySelector('.next');
+const btnPrev = document.querySelector('.prev');
 
-let container = document.querySelector('.container')
-let list = document.querySelector('.container .list')
-let thumb = document.querySelector('.container .thumb')
+const container = document.querySelector('.container');
+const list = document.querySelector('.list');
+const thumb = document.querySelector('.thumb');
 
+// Eventos dos botões
+btnNext.addEventListener('click', () => moveSlider('next'));
+btnPrev.addEventListener('click', () => moveSlider('prev'));
 
+function moveSlider(direction) {
+    const listItems = list.querySelectorAll('.list-item');
+    const thumbItems = thumb.querySelectorAll('.thumb-item');
 
-btnNext.onclick = () => moveItemsOnClick('next')
-btnPrev.onclick = () => moveItemsOnClick('prev')
+    const firstListItem = listItems[0];
+    const lastListItem = listItems[listItems.length - 1];
 
+    const firstThumb = thumbItems[0];
+    const lastThumb = thumbItems[thumbItems.length - 1];
 
-
-function moveItemsOnClick(type) {
-
-    let listItems = document.querySelectorAll('.list .list-item')
-    let thumbItens = document.querySelectorAll('.thumb .thumb-item')
-
-    console.log(listItems)
-    console.log(thumbItens)
-
-
-    if (type === 'next') {
-        list.appendChild(listItems[0])
-        thumb.appendChild(thumbItens[0])
-        container.classList.add('next')
-
+    if (direction === 'next') {
+        list.appendChild(firstListItem);
+        thumb.appendChild(firstThumb);
+        triggerAnimation('next');
     } else {
-        list.prepend(listItems[listItems.length - 1])
-        thumb.prepend(thumbItens[thumbItens.length - 1])
-        container.classList.add('prev')
+        list.prepend(lastListItem);
+        thumb.prepend(lastThumb);
+        triggerAnimation('prev');
     }
-
-    setTimeout( () => {
-        container.classList.remove('next')
-        container.classList.remove('prev')
-    }, 2000)
 }
 
+function triggerAnimation(type) {
+    container.classList.add(type);
+
+    setTimeout(() => {
+        container.classList.remove('next', 'prev');
+    }, 2000);
+}
